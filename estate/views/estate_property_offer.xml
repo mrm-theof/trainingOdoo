@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Action pour ouvrir la vue des offres -->
+    <record id="action_estate_property_offer" model="ir.actions.act_window">
+        <field name="name">Property Offers</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">tree,form</field>
+        <!-- Message d'aide optionnel -->
+        <field name="help">List of offers for the properties</field>
+    </record>
+
+    <!-- Menu pour accéder aux offres (sous-menu dans Real Estate ou Properties) -->
+    <menuitem id="menu_estate_property_offer"
+              name="Offers"
+              parent="menu_estate_root"
+              action="action_estate_property_offer"/>
+
+    <!-- Vue Liste (Tree) des offres -->
+    <record id="view_estate_property_offer_tree" model="ir.ui.view">
+        <field name="name">estate.property.offer.tree</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="property_id"/>
+                <field name="price"/>
+                <field name="status"/>
+                <field name="partner_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vue Formulaire des offres avec les boutons "Accept" et "Refuse" -->
+    <record id="view_estate_property_offer_form" model="ir.ui.view">
+        <field name="name">estate.property.offer.form</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <!-- Bouton "Accept" -->
+                    <button name="action_accept_offer"
+                            type="object"
+                            string="Accept"
+                            icon="fa-check"
+                            class="btn-primary"
+                            attrs="{'invisible': [('status', '=', 'accepted')]}" />
+
+                    <!-- Bouton "Refuse" -->
+                    <button name="action_refuse_offer"
+                            type="object"
+                            string="Refuse"
+                            icon="fa-ban"
+                            class="btn-secondary"
+                            attrs="{'invisible': [('status', '=', 'refused')]}" />
+                </header>
+                <sheet>
+                    <group>
+                        <field name="property_id"/>
+                        <field name="price"/>
+                        <field name="status" readonly="1"/>
+                        <field name="partner_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
