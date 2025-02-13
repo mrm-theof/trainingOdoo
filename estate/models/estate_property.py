@@ -13,6 +13,8 @@ class EstateProperty(models.Model):
     expected_price = fields.Float(string="Expected Price", required=True)
     selling_price = fields.Float(string="Selling Price", readonly=False)  # Correction: pas de readonly
 
+    buyer_id = fields.Many2one('res.partner', string="Buyer", copy=False)
+
     # ✅ Ajout du champ `state`
     state = fields.Selection([
         ('new', 'New'),

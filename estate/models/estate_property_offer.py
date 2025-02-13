@@ -11,23 +11,27 @@ class EstatePropertyOffer(models.Model):
         ('refused', 'Refused')
     ], string="Status", copy=False, default=False)
 
-    # Relation vers la propriété, pour savoir à quel bien s’applique l’offre
+    # Relation vers la propriété
     property_id = fields.Many2one('estate.property', required=True)
 
-    # Exemple de relation vers un client (pour savoir qui fait l’offre)
+    # Acheteur potentiel (ex. client)
     partner_id = fields.Many2one('res.partner', string="Customer")
 
     def action_accept_offer(self):
         """Accepter l'offre"""
         for offer in self:
+            # Vérifie si la propriété est déjà vendue ou déjà dotée d'un acheteur
+            if offer.property_id.buyer_id:
+                raise UserError("Impossible d'accepter une seconde offre pour la même propriété !")
             if offer.status == 'refused':
                 raise UserError("Impossible d'accepter une offre déjà refusée.")
+
+            # Met à jour le statut de l'offre
             offer.status = 'accepted'
-            # On peut aussi modifier l'état ou le prix de la propriété, par exemple :
+            # Met à jour la propriété associée
             offer.property_id.state = 'offer_received'
             offer.property_id.selling_price = offer.price
-
-
+            offer.property_id.buyer_id = offer.partner_id
 
     def action_refuse_offer(self):
         """Refuser l'offre"""
