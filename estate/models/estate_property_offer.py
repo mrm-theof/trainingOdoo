@@ -12,7 +12,7 @@ class EstatePropertyOffer(models.Model):
     ], string="Status", copy=False, default=False)
 
     # Relation vers la propriété
-    property_id = fields.Many2one('estate.property', required=True)
+    property_id = fields.Many2one('estate.property', required=True, ondelete='cascade')
 
     # Acheteur potentiel (ex. client)
     partner_id = fields.Many2one('res.partner', string="Customer")
@@ -39,3 +39,11 @@ class EstatePropertyOffer(models.Model):
             if offer.status == 'accepted':
                 raise UserError("Impossible de refuser une offre déjà acceptée.")
             offer.status = 'refused'
+
+
+    _sql_constraints = [
+        ('price', 'CHECK(price > 0)', 'The price must be positive.'),
+    ]
+
+
+

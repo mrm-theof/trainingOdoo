@@ -1,5 +1,7 @@
-from odoo import models, fields, api
 from odoo.exceptions import UserError
+from odoo import models, fields, api, _
+from odoo.exceptions import ValidationError
+from odoo.tools import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -47,9 +49,14 @@ class EstateProperty(models.Model):
         ],
         string="Garden Orientation"
     )
+    offer_ids = fields.One2many(
+        'estate.property.offer',
+        'property_id',
+        ondelete='cascade',
+    )
     property_type_id = fields.Many2one(
         'estate.property.type',
-        string='Property Type'
+        string='Property Type',
     )
 
     # ✅ Correction: Ajout du champ `best_price` correctement défini
@@ -74,3 +81,20 @@ class EstateProperty(models.Model):
             if record.state == 'sold':
                 raise UserError("Une propriété vendue ne peut pas être annulée.")
             record.state = 'canceled'
+
+    # ✅ Ajout de la contrainte Python
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        """Vérifie que le prix de vente ne soit pas inférieur à 90% du prix attendu."""
+        for record in self:
+            if float_is_zero(record.selling_price, precision_digits=2):
+                # Si le prix de vente est nul (avant validation d'une offre), on ne bloque pas
+                continue
+            min_price = record.expected_price * 0.9  # 90% du prix attendu
+            if float_compare(record.selling_price, min_price, precision_digits=2) == -1:
+                raise ValidationError(_("Le prix de vente ne peut pas être inférieur à 90% du prix attendu !"))
+    _sql_constraints = [
+        ('unique_property_name', 'UNIQUE(name)', 'The property name must be unique!'),
+        ('positive_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be positive.'),
+        ('positive_selling_price', 'CHECK(selling_price >= 0)', 'The selling price cannot be negative.')
+    ]
