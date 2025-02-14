@@ -8,14 +8,7 @@
         <field name="view_mode">tree,form,kanban,graph</field>
     </record>
 
-    <!-- Menu principal "Real Estate" -->
-    <menuitem id="menu_estate_root" name="Real Estate"/>
 
-    <!-- Sous-menu "Properties" pointant sur l'action -->
-    <menuitem id="menu_estate_property"
-              name="Properties"
-              parent="menu_estate_root"
-              action="action_estate_property"/>
 
     <!-- Vue Kanban -->
     <record id="view_estate_property_kanban" model="ir.ui.view">

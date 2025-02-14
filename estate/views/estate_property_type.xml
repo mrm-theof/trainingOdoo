@@ -1,5 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
+    <!-- Action pour ouvrir la vue des offres -->
+    <record id="action_estate_property_type" model="ir.actions.act_window">
+        <field name="name">Property type</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">tree,form</field>
+        <!-- Message d'aide optionnel -->
+        <field name="help">List of property type</field>
+    </record>
+
     <record id="view_estate_property_type_tree" model="ir.ui.view">
         <field name="name">estate.property.type.tree</field>
         <field name="model">estate.property.type</field>
@@ -18,6 +27,14 @@
                 <sheet>
                     <group>
                         <field name="name"/>
+                        <!-- Ajout de la liste des propriétés dans le formulaire -->
+                        <field name="property_ids">
+                            <tree editable="bottom">
+                                <field name="name"/>
+                                <field name="expected_price"/>
+                                <field name="state"/>
+                            </tree>
+                        </field>
                     </group>
                 </sheet>
             </form>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+     <!-- Menu principal "Real Estate" -->
+    <menuitem id="menu_estate_root" name="Real Estate"/>
+
+    <!-- Sous-menu "Properties" pointant sur l'action -->
+    <menuitem id="menu_estate_property"
+              name="Properties"
+              parent="menu_estate_root"
+              action="action_estate_property"/>
+
+        <!-- Menu pour accéder aux offres (sous-menu dans Real Estate ou Properties) -->
+    <menuitem id="menu_estate_property_offer"
+              name="Offers"
+              parent="menu_estate_root"
+              action="action_estate_property_offer"/>
+
+    <menuitem id="menu_estate_property_type"
+              name="Type"
+              parent="menu_estate_root"
+              action="action_estate_property_type"/>
+
+</odoo>

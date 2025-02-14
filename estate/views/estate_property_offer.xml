@@ -9,11 +9,7 @@
         <field name="help">List of offers for the properties</field>
     </record>
 
-    <!-- Menu pour accéder aux offres (sous-menu dans Real Estate ou Properties) -->
-    <menuitem id="menu_estate_property_offer"
-              name="Offers"
-              parent="menu_estate_root"
-              action="action_estate_property_offer"/>
+
 
     <!-- Vue Liste (Tree) des offres -->
     <record id="view_estate_property_offer_tree" model="ir.ui.view">
