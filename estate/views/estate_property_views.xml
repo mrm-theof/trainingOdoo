@@ -62,19 +62,21 @@
 
     <!-- Vue Formulaire -->
     <record id="view_estate_property_form" model="ir.ui.view">
-        <field name="name">estate.property.form</field>
-        <field name="model">estate.property</field>
-        <field name="arch" type="xml">
-            <form>
+    <field name="name">estate.property.form</field>
+    <field name="model">estate.property</field>
+    <field name="arch" type="xml">
+        <form>
+            <sheet>
                 <header>
-                    <!-- Bouton "Mark as Sold" -->
+                    <field name="state" widget="statusbar" readonly="1"/>
+
+                    <!-- Boutons d'action -->
                     <button name="action_sell_property"
                             type="object"
                             string="Mark as Sold"
                             class="btn-primary"
                             attrs="{'invisible': [('state', 'in', ['sold','canceled'])]}" />
 
-                    <!-- Bouton "Cancel" -->
                     <button name="action_cancel_property"
                             type="object"
                             string="Cancel"
@@ -82,31 +84,36 @@
                             attrs="{'invisible': [('state', 'in', ['sold','canceled'])]}" />
                 </header>
 
-                <sheet>
-                    <group>
-                        <field name="name"/>
-                        <field name="description"/>
-                        <field name="postcode"/>
-                        <field name="date_availability"/>
-                        <field name="expected_price" required="1"/>
-                        <field name="selling_price" readonly="0"/>
-                        <field name="buyer_id" readonly="1"/>
-                        <field name="property_type_id"/>
-                        <field name="state" readonly="1"/>
-                    </group>
-                    <group>
-                        <field name="bedrooms"/>
-                        <field name="living_area"/>
-                        <field name="facades"/>
-                        <field name="garage"/>
-                        <field name="garden"/>
-                        <field name="garden_area"/>
-                        <field name="garden_orientation"/>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
+                <notebook>
+                    <page string="Général">
+                        <group>
+                            <field name="name"/>
+                            <field name="description"/>
+                            <field name="postcode"/>
+                            <field name="date_availability"/>
+                            <field name="expected_price"/>
+                            <field name="selling_price"/>
+                            <field name="property_type_id"/>
+                        </group>
+                    </page>
+
+                    <page string="Détails">
+                        <group>
+                            <field name="bedrooms"/>
+                            <field name="living_area"/>
+                            <field name="facades"/>
+                            <field name="garage"/>
+                            <field name="garden"/>
+                            <field name="garden_area"/>
+                            <field name="garden_orientation"/>
+                        </group>
+                    </page>
+                </notebook>
+            </sheet>
+        </form>
+    </field>
+</record>
+
 
     <!-- Vue Graphique -->
     <record id="view_estate_property_graph" model="ir.ui.view">
