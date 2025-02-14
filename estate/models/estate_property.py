@@ -7,6 +7,7 @@ from odoo.tools import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Estate Property'
+    _order = 'id desc'
 
     name = fields.Char(string="Title", required=True)
     description = fields.Text()
@@ -15,6 +16,10 @@ class EstateProperty(models.Model):
     expected_price = fields.Float(string="Expected Price", required=True)
     selling_price = fields.Float(string="Selling Price", readonly=False)  # Correction: pas de readonly
 
+    tag_ids = fields.Many2many(
+        'estate.property.tag',
+        string="Tags",
+    )
     buyer_id = fields.Many2one('res.partner', string="Buyer", copy=False)
 
     # ✅ Ajout du champ `state`

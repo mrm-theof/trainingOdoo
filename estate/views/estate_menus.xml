@@ -16,9 +16,19 @@
               parent="menu_estate_root"
               action="action_estate_property_offer"/>
 
+
+    <menuitem id="menu_estate_property_settings"
+              name="Settings"
+              parent="menu_estate_root"/>
+
     <menuitem id="menu_estate_property_type"
               name="Type"
-              parent="menu_estate_root"
+              parent="menu_estate_property_settings"
               action="action_estate_property_type"/>
+
+    <menuitem id="menu_estate_property_tag"
+              name="Property Tags"
+              parent="menu_estate_property_settings"
+              action="action_estate_property_tag"/>
 
 </odoo>
