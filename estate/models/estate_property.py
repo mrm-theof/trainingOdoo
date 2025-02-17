@@ -40,6 +40,13 @@ class EstateProperty(models.Model):
     # ✅ Correction du champ total_area
     total_area = fields.Float(string="Total Area", compute="_compute_total_area")
 
+    # Champ pour relier une propriété à un vendeur (utilisateur Odoo)
+    salesman_id = fields.Many2one(
+        "res.users",  # Modèle cible
+        string="Vendeur",
+        default=lambda self: self.env.user,  # Définit l'utilisateur actuel comme vendeur par défaut
+    )
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -98,6 +105,21 @@ class EstateProperty(models.Model):
             min_price = record.expected_price * 0.9  # 90% du prix attendu
             if float_compare(record.selling_price, min_price, precision_digits=2) == -1:
                 raise ValidationError(_("Le prix de vente ne peut pas être inférieur à 90% du prix attendu !"))
+
+    @api.model
+    def create(self, vals):
+        """Forcer l'état à 'offer_received' lors de la création d'une propriété"""
+        vals['state'] = 'offer_received'  # On impose l'état "offer_received"
+        return super(EstateProperty, self).create(vals)
+
+    # ✅ Empêcher la suppression si l'état n'est pas "new" ou "canceled"
+    @api.ondelete(at_uninstall=False)
+    def _check_delete_property(self):
+        for record in self:
+            if record.state not in ['new', 'canceled']:
+                raise UserError(_("Vous ne pouvez supprimer une propriété que si son état est 'Nouveau' ou 'Annulé'."))
+
+
     _sql_constraints = [
         ('unique_property_name', 'UNIQUE(name)', 'The property name must be unique!'),
         ('positive_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be positive.'),

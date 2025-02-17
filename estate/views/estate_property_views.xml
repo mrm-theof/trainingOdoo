@@ -46,7 +46,7 @@
 
     <!-- Vue Liste (Tree) -->
     <record id="view_estate_property_tree" model="ir.ui.view">
-        <field name="name">estate.property.tree</field>
+        <field name="name">estatekan.property.tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <tree>
@@ -112,7 +112,7 @@
             </sheet>
         </form>
     </field>
-</record>
+    </record>
 
 
     <!-- Vue Graphique -->
