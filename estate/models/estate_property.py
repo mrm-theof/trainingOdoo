@@ -82,6 +82,7 @@ class EstateProperty(models.Model):
     # ✅ Boutons "Annuler" et "Vendu" corrigés
     def action_sell_property(self):
         """Marquer la propriété comme vendue"""
+        print("On passe ici ?")
         for record in self:
             if record.state == 'canceled':
                 raise UserError("Une propriété annulée ne peut pas être vendue.")
